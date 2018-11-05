@@ -1,5 +1,5 @@
 {
-  "name": "node-boleto",
+  "name": "@contaquanto/boleto",
   "version": "2.0.6",
   "description": "Boleto generator in Node.js",
   "main": "index.js",
@@ -9,10 +9,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pagarme/node-boleto"
+    "url": "https://github.com/quan-to/node-boleto"
   },
   "dependencies": {
-    "ejs": "2.5.5"
+    "ejs": "2.5.5",
+    "moment": "^2.22.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
@@ -28,7 +29,6 @@
     "eslint-plugin-standard": "^2.0.1",
     "express": "^4.16.4",
     "mocha": "^3.2.0",
-    "moment": "https://github.com/pagarme/moment/archive/0.0.2.tar.gz",
     "ramda": "^0.23.0"
   },
   "author": "Pedro Franceschi",
