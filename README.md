@@ -1,4 +1,4 @@
-node-boleto
+@contaquanto/boleto
 =============
 
 Geração de boleto bancário em Node.js. Os algoritmos de geração da linha digitável e do código de barras foram inspirados no [boletophp](https://github.com/BielSystems/boletophp).
@@ -20,9 +20,9 @@ npm install @contaquanto/boleto
 Emitindo um boleto:
 
 ```javascript
-var Boleto = require('node-boleto').Boleto;
+const { Boleto } = require('@contaquanto/boleto');
 
-var boleto = new Boleto({
+const boleto = new Boleto({
   'banco': "santander", // nome do banco dentro da pasta 'banks'
   'data_emissao': new Date(),
   'data_vencimento': new Date(new Date().getTime() + 5 * 24 * 3600 * 1000), // 5 dias futuramente
@@ -36,9 +36,9 @@ var boleto = new Boleto({
   'carteira': "102"
 });
 
-console.log("Linha digitável: " + boleto['linha_digitavel'])
+console.log(`Linha digitável: ${boleto.linha_digitavel}`)
 
-boleto.renderHTML(function(html){
+boleto.renderHTML((html) => {
   console.log(html);
 });
 ```
@@ -46,14 +46,14 @@ boleto.renderHTML(function(html){
 Parseando o arquivo-retorno EDI do banco:
 
 ```javascript
-var ediParser = require('node-boleto').EdiParser,
-	fs = require('fs');
+const { EdiParser } = require('@contaquanto/boleto');
+const fs = require('fs');
 
-var ediFileContent = fs.readFileSync("arquivo.txt").toString();
+const ediFileContent = fs.readFileSync('arquivo.txt').toString();
 
-var parsedFile = ediParser.parse("santander", ediFileContent);
+const parsedFile = EdiParser.parse('santander', ediFileContent);
 
-console.log("Boletos pagos: ");
+console.log('Boletos pagos: ');
 console.log(parsedFile.boletos);
 ```
 
