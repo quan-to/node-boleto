@@ -1,9 +1,13 @@
 var formatters = require('../../lib/formatters'),
   ediHelper = require('../../lib/edi-helper'),
-  helper = require('./helper');
+  helper = require('./helper'),
+  fs = require('fs');
+
+
+const logoB64 = fs.readFileSync(__dirname + '/logo.jpg', { encoding: 'base64' })
 
 exports.options = {
-  logoURL: 'http://borboleto.com.br/boletos/itau/imagens/logo_itau.gif',
+  logoURL: 'data:image/jpg;base64,' + logoB64,
   codigo: '341'
 };
 

@@ -2,9 +2,12 @@ const moment = require('moment')
 var formatters = require('../../lib/formatters')
 var ediHelper = require('../../lib/edi-helper')
 var helper = require('./helper')
+const fs = require('fs')
+
+const logoB64 = fs.readFileSync(__dirname + '/santander.png', { encoding: 'base64' })
 
 exports.options = {
-  logoURL: 'https://assets.pagar.me/boleto/images/santander.png',
+  logoURL: 'data:image/png;base64,' + logoB64,
   codigo: '033'
 }
 

@@ -3,8 +3,11 @@ var formatters = require('../../lib/formatters')
 var ediHelper = require('../../lib/edi-helper')
 var helper = require('./helper')
 
+
+const logoB64 = fs.readFileSync(__dirname + '/bradesco.jpg', { encoding: 'base64' })
+
 exports.options = {
-  logoURL: 'https://assets.pagar.me/boleto/images/bradesco.jpg',
+  logoURL: 'data:image/jpeg;base64,' + logoB64,
   codigo: '237'
 }
 
