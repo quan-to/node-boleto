@@ -1,44 +1,44 @@
-var formatters = require('../../lib/formatters'),
-  ediHelper = require('../../lib/edi-helper'),
-  helper = require('./helper'),
-  fs = require('fs');
+const fs = require('fs');
+const formatters = require('../../lib/formatters');
+const ediHelper = require('../../lib/edi-helper');
+const helper = require('./helper');
 
 
-const logoB64 = fs.readFileSync(__dirname + '/logo.jpg', { encoding: 'base64' })
+const logoB64 = fs.readFileSync(`${__dirname}/logo.jpg`, { encoding: 'base64' });
 
 exports.options = {
-  logoURL: 'data:image/jpg;base64,' + logoB64,
-  codigo: '341'
+  logoURL: `data:image/jpg;base64,${logoB64}`,
+  codigo: '341',
 };
 
 exports.dvBarra = function (barra) {
-  var resto2 = formatters.mod11(barra, 9, 1);
-  return (resto2 == 0 || resto2 == 1 || resto2 == 10 || resto2 == 11) ? 1 : 11 - resto2;
+  const resto2 = formatters.mod11(barra, 9, 1);
+  return (resto2 === 0 || resto2 === 1 || resto2 === 10 || resto2 === 11) ? 1 : 11 - resto2;
 };
 
 exports.barcodeData = function (boleto) {
-  var codigoBanco = this.options.codigo;
-  var numMoeda = "9";
+  const codigoBanco = this.options.codigo;
+  const numMoeda = '9';
 
-  var fatorVencimento = formatters.fatorVencimento(boleto['data_vencimento']);
+  const fatorVencimento = formatters.fatorVencimento(boleto.data_vencimento);
 
-  var agencia = formatters.addTrailingZeros(boleto['agencia'], 4);
+  const agencia = formatters.addTrailingZeros(boleto.agencia, 4);
 
-  var conta = formatters.addTrailingZeros(boleto['codigo_cedente'], 5);
+  const conta = formatters.addTrailingZeros(boleto.codigo_cedente, 5);
 
-  var valor = formatters.addTrailingZeros(boleto['valor'], 10);
-  var carteira = boleto['carteira'];
+  const valor = formatters.addTrailingZeros(boleto.valor, 10);
+  const { carteira } = boleto;
 
-  var nossoNumero = formatters.addTrailingZeros(boleto['nosso_numero'], 8);
+  const nossoNumero = formatters.addTrailingZeros(boleto.nosso_numero, 8);
 
-  var barra = codigoBanco + numMoeda + fatorVencimento + valor + carteira + nossoNumero + formatters.mod10(agencia + conta + carteira + nossoNumero) + agencia + conta + formatters.mod10(agencia + conta) + '000';
+  const barra = `${codigoBanco + numMoeda + fatorVencimento + valor + carteira + nossoNumero + formatters.mod10(agencia + conta + carteira + nossoNumero) + agencia + conta + formatters.mod10(agencia + conta)}000`;
 
-  var dvBarra = this.dvBarra(barra);
-  var lineData = barra.substring(0, 4) + dvBarra + barra.substring(4, barra.length);
+  const dvBarra = this.dvBarra(barra);
+  const lineData = barra.substring(0, 4) + dvBarra + barra.substring(4, barra.length);
 
-  boleto['codigo_cedente'] = [conta, '-', formatters.mod10([agencia, conta].join(''))].join('');
-  boleto['nosso_numero'] = carteira + '/' + nossoNumero;
-  boleto['nosso_numero_dv'] = formatters.mod10([agencia, conta, carteira, nossoNumero].join(''));
+  boleto.codigo_cedente = [conta, '-', formatters.mod10([agencia, conta].join(''))].join('');
+  boleto.nosso_numero = `${carteira}/${nossoNumero}`;
+  boleto.nosso_numero_dv = formatters.mod10([agencia, conta, carteira, nossoNumero].join(''));
 
   return lineData;
 };
@@ -56,27 +56,27 @@ exports.linhaDigitavel = function (barcodeData) {
   // 37-43    -> Conta do Cedente (sem dígito)
   // 44-44    -> Zero (Fixo)
 
-  var campos = [];
+  const campos = [];
 
   // 1. Campo - composto pelo código do banco, código da moéda, as cinco primeiras posições
   // do campo livre e DV (modulo10) deste campo
-  var campo = barcodeData.substr(0, 3) + barcodeData.substr(3, 1) + barcodeData.substr(19, 3) + barcodeData.substr(22, 2);
-  campo = campo + formatters.mod10(campo);
-  campo = campo.substr(0, 5) + '.' + campo.substr(5);
+  let campo = barcodeData.substr(0, 3) + barcodeData.substr(3, 1) + barcodeData.substr(19, 3) + barcodeData.substr(22, 2);
+  campo += formatters.mod10(campo);
+  campo = `${campo.substr(0, 5)}.${campo.substr(5)}`;
   campos.push(campo);
 
   // 2. Campo - composto pelas posiçoes 6 a 15 do campo livre
   // e livre e DV (modulo10) deste campo
   campo = barcodeData.substr(24, 6) + barcodeData.substr(30, 1) + barcodeData.substr(31, 3);
-  campo = campo + formatters.mod10(campo);
-  campo = campo.substr(0, 5) + '.' + campo.substr(5);
+  campo += formatters.mod10(campo);
+  campo = `${campo.substr(0, 5)}.${campo.substr(5)}`;
   campos.push(campo);
 
   // 3. Campo composto pelas posicoes 16 a 25 do campo livre
   // e livre e DV (modulo10) deste campo
   campo = barcodeData.substr(34, 1) + barcodeData.substr(35, 6) + barcodeData.substr(41, 3);
-  campo = campo + formatters.mod10(campo);
-  campo = campo.substr(0, 5) + '.' + campo.substr(5);
+  campo += formatters.mod10(campo);
+  campo = `${campo.substr(0, 5)}.${campo.substr(5)}`;
   campos.push(campo);
 
   // 4. Campo - digito verificador do codigo de barras
@@ -89,9 +89,9 @@ exports.linhaDigitavel = function (barcodeData) {
   campo = barcodeData.substr(5, 4) + barcodeData.substr(9, 10);
   campos.push(campo);
 
-  return campos.join(" ");
+  return campos.join(' ');
 };
 
-exports.parseEDIFile = function (fileContent) {
-  console.log('Not implemented');
+exports.parseEDIFile = function () {
+  throw new Error('Not implemented');
 };

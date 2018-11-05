@@ -1,8 +1,11 @@
 {
-  "extends": "standard",
+  "extends": "airbnb/base",
+  "parser": "babel-eslint",
   "rules": {
     "eqeqeq": "warn",
-    "no-throw-literal": "off"
+    "no-throw-literal": "off",
+    "no-underscore-dangle": 0,
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true } ]
   },
   "env": {
     "mocha": true
