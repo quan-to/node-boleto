@@ -1,6 +1,6 @@
 {
   "name": "@contaquanto/boleto",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Boleto generator in Node.js",
   "main": "index.js",
   "scripts": {

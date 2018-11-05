@@ -9,11 +9,12 @@ Geração de boleto bancário em Node.js. Os algoritmos de geração da linha di
 
 - Santander - by [pedrofranceschi](https://github.com/pedrofranceschi) - homologado
 - Bradesco - by [pedrofranceschi](https://github.com/pedrofranceschi)
+- Itaú - by [rafakato](https://github.com/rafakato)
 
 ## Instalação
 
 ```
-npm install node-boleto
+npm install @contaquanto/boleto
 ```
 
 ## Exemplo de uso
