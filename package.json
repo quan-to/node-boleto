@@ -23,6 +23,7 @@
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-standard": "^2.0.1",
+    "express": "^4.16.4",
     "mocha": "^3.2.0",
     "moment": "https://github.com/pagarme/moment/archive/0.0.2.tar.gz",
     "ramda": "^0.23.0"
