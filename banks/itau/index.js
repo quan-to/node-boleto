@@ -32,7 +32,6 @@ exports.barcodeData = function (boleto) {
   const nossoNumero = formatters.addTrailingZeros(boleto.nosso_numero, 8);
 
   const barra = `${codigoBanco + numMoeda + fatorVencimento + valor + carteira + nossoNumero + formatters.mod10(agencia + conta + carteira + nossoNumero) + agencia + conta + formatters.mod10(agencia + conta)}000`;
-
   const dvBarra = this.dvBarra(barra);
   const lineData = barra.substring(0, 4) + dvBarra + barra.substring(4, barra.length);
 
@@ -42,7 +41,7 @@ exports.barcodeData = function (boleto) {
 
   return lineData;
 };
-
+// 34191.09008 00002.472934 84120.340009 7 76850000000100
 exports.linhaDigitavel = function (barcodeData) {
   // 01-03    -> Código do banco sem o digito
   // 04-04    -> Código da Moeda (9-Real)

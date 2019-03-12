@@ -1,6 +1,6 @@
 {
   "name": "@contaquanto/boleto",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "Boleto generator in Node.js",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,7 @@
   "author": "Pedro Franceschi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pagarme/node-boleto/issues"
+    "url": "https://github.com/quan-to/node-boleto/issues"
   },
-  "homepage": "https://github.com/pagarme/node-boleto"
+  "homepage": "https://github.com/quan-to/node-boleto"
 }
